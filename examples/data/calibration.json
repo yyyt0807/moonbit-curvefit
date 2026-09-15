@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "model": "linear",
+  "data": [
+    { "x": 0, "y": 1.53 },
+    { "x": 1, "y": 3.67 },
+    { "x": 2, "y": 5.93 },
+    { "x": 3, "y": 8.07 },
+    { "x": 4, "y": 10.33 },
+    { "x": 5, "y": 12.47 }
+  ],
+  "parameters": [
+    { "name": "intercept", "initial": 0 },
+    { "name": "slope", "initial": 0 }
+  ],
+  "options": { "trace": true }
+}
