@@ -1,0 +1,10 @@
+import {
+  "yyyt0807/curvefit/src" @fit,
+  "moonbitlang/core/env",
+  "moonbitlang/core/debug",
+  "moonbitlang/x/fs",
+}
+
+supported_targets = "+native"
+
+pkgtype(kind: "executable")

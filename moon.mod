@@ -13,3 +13,7 @@ keywords = [ "curve-fitting", "least-squares", "numerics", "wasm" ]
 description = "Pure MoonBit dense nonlinear least-squares with robust losses and convergence diagnostics"
 
 preferred_target = "wasm-gc"
+
+import {
+  "moonbitlang/x@0.4.49",
+}
