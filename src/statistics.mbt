@@ -47,13 +47,32 @@ pub fn statistics(
     Ok(v) => 2.0 * v
     Err(e) => return Err(e)
   }
-  let r2 = if total > 0.0 { Some(1.0 - sse / total) } else { None }
+  let r2 = if total > 0.0 {
+    let value = 1.0 - sse / total
+    if finite(value) {
+      Some(value)
+    } else {
+      None
+    }
+  } else {
+    None
+  }
   let df = n - free_parameters
   if !finite(sse) || !finite(total) || !finite(mean) {
     return Err(InvalidData("statistics arithmetic overflow"))
   }
   let adjusted = if df > 0 && n > 1 {
-    r2.map(fn(r) { 1.0 - (1.0 - r) * (n - 1).to_double() / df.to_double() })
+    match r2 {
+      Some(r) => {
+        let value = 1.0 - (1.0 - r) * (n - 1).to_double() / df.to_double()
+        if finite(value) {
+          Some(value)
+        } else {
+          None
+        }
+      }
+      None => None
+    }
   } else {
     None
   }

@@ -36,6 +36,9 @@ pub fn qr_factor(
       return Err(InvalidData("nonfinite QR RHS"))
     }
   }
+  if m > 1100000 / n {
+    return Err(InvalidData("dense QR exceeds 1.1 million entries"))
+  }
   let a = matrix.map(fn(row) { row.copy() })
   let b = rhs.copy()
   let perm = Array::makei(n, fn(i) { i })

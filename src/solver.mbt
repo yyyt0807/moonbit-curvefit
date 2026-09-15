@@ -29,6 +29,9 @@ pub fn solve(
       ),
     )
   }
+  if !active.is_empty() && first.length() > 1000000 / active.length() {
+    return Err(InvalidData("dense Jacobian exceeds one million entries"))
+  }
   let precision = match weights {
     Some(w) => w.copy()
     None => Array::make(first.length(), 1.0)
