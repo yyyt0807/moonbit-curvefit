@@ -5,3 +5,5 @@ target/
 *.exe
 *.wasm
 *.obj
+.venv/
+__pycache__/
