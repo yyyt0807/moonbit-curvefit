@@ -4,6 +4,9 @@ pub fn initial_parameters(
   model : Model,
   data : Array[Observation],
 ) -> Result[Array[Parameter], FitError] {
+  if model.parameter_names.is_empty() || model.parameter_names.length() > 64 {
+    return Err(InvalidParameter("seed model requires 1..64 parameter names"))
+  }
   match validate_observations(data) {
     Err(e) => return Err(e)
     Ok(_) => ()
@@ -83,6 +86,9 @@ pub fn initial_parameters(
           InvalidOptions("custom model requires explicit initial parameters"),
         )
       }
+  }
+  if values.length() != model.parameter_names.length() {
+    return Err(InvalidParameter("seed model parameter count differs"))
   }
   let parameters = Array::makei(values.length(), fn(i) {
     let name = model.parameter_names[i]

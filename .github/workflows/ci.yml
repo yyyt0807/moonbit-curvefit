@@ -1,0 +1,52 @@
+name: MoonCurveFit CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  moonbit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install MoonBit (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - name: Install MoonBit (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          irm https://cli.moonbitlang.com/install/powershell.ps1 | iex
+          "$env:USERPROFILE\.moon\bin" >> $env:GITHUB_PATH
+      - run: moon version --all
+      - run: moon update
+      - run: moon check --target all --deny-warn
+      - run: moon build --target all --deny-warn
+      - run: moon test --target all --deny-warn
+      - run: moon fmt
+      - run: git diff --exit-code
+      - run: moon info
+      - run: git diff --exit-code
+      - run: moon run examples/demo --target native
+      - run: moon run examples/demo --target js
+      - run: moon run examples/demo --target wasm-gc
+      - run: moon run examples/benchmark --target native
+      - run: moon run cmd/curvefit --target native -- fit-json examples/data/calibration.json markdown
+      - uses: actions/setup-python@v5
+        if: runner.os == 'Linux'
+        with:
+          python-version: '3.11'
+      - name: Independent numerical comparison
+        if: runner.os == 'Linux'
+        run: |
+          python -m pip install numpy==2.4.6 scipy==1.17.1
+          python tools/differential.py

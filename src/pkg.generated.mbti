@@ -1,0 +1,312 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "yyyt0807/curvefit/src"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn active_indices(Array[Parameter]) -> Array[Int]
+
+pub fn analytic_jacobian((Array[Double]) -> Array[Array[Double]], Array[Double], Array[Parameter], Array[Int], Array[Double]) -> Result[Array[Array[Double]], FitError]
+
+pub fn apply_step(Array[Double], Array[Parameter], Array[Int], Array[Double]) -> (Array[Double], Array[Double])
+
+pub fn check_model_gradient(Model, Array[Parameter], Array[Double], absolute_tolerance? : Double, relative_tolerance? : Double) -> Result[JacobianCheck, FitError]
+
+pub fn compensated_sum(Array[Double]) -> Double
+
+pub fn correlation_matrix(Array[Array[Double]]) -> Result[Array[Array[Double?]], FitError]
+
+pub fn curve_residuals(CurveResult) -> Array[Double]
+
+pub fn curve_svg(CurveResult, residuals? : Bool, width? : Int, height? : Int) -> Result[String, FitError]
+
+pub fn custom_model(String, Array[String], (Double, Array[Double]) -> Double, gradient? : (Double, Array[Double]) -> Array[Double]) -> Result[Model, FitError]
+
+pub fn default_options() -> Options
+
+pub fn diagnose(FitResult, Array[Parameter], Array[Array[Double]], Loss, rank_tolerance? : Double) -> FitResult
+
+pub fn dot(Array[Double], Array[Double]) -> Result[Double, FitError]
+
+pub fn exponential_decay_model() -> Model
+
+pub fn exponential_growth_model() -> Model
+
+pub fn finite(Double) -> Bool
+
+pub fn fit_curve(Model, Array[Observation], Array[Parameter], options? : Options, analytic? : Bool) -> Result[CurveResult, FitError]
+
+pub fn gaussian_model() -> Model
+
+pub fn hill_model() -> Model
+
+pub fn initial_parameters(Model, Array[Observation]) -> Result[Array[Parameter], FitError]
+
+pub fn linear_model() -> Model
+
+pub fn logistic5_model() -> Model
+
+pub fn logistic_model() -> Model
+
+pub fn loss_value(Loss, Double) -> (Double, Double)
+
+pub fn markdown_report(CurveResult) -> String
+
+pub fn matrix_shape(Array[Array[Double]]) -> Result[(Int, Int), FitError]
+
+pub fn matvec(Array[Array[Double]], Array[Double]) -> Result[Array[Double], FitError]
+
+pub fn mean_bands(Model, FitResult, Array[Double], multiplier? : Double) -> Result[Array[MeanBand], FitError]
+
+pub fn model_catalogue() -> Array[String]
+
+pub fn named_model(String) -> Result[Model, FitError]
+
+pub fn norm2(Array[Double]) -> Double
+
+pub fn norm_inf(Array[Double]) -> Double
+
+pub fn normal_intervals(FitResult, multiplier? : Double) -> Result[Array[(Double, Double)], FitError]
+
+pub fn normalized_values(Array[Double], Array[Parameter], Array[Int]) -> Array[Double]
+
+pub fn numerical_jacobian((Array[Double]) -> Array[Double], Array[Parameter], step? : Double) -> Result[Array[Array[Double]], FitError]
+
+pub fn objective(Loss, Array[Double]) -> Result[Double, FitError]
+
+pub fn observation(Double, Double, weight? : Double) -> Observation
+
+pub fn observations_csv(Array[Observation]) -> Result[String, FitError]
+
+pub fn parameter(String, Double, lower? : Double, upper? : Double, fixed? : Bool, scale? : Double) -> Parameter
+
+pub fn parse_csv(String) -> Result[Array[Observation], FitError]
+
+pub fn parse_number(String) -> Result[Double, FitError]
+
+pub fn parse_request(String) -> Result[FitRequest, FitError]
+
+pub fn polynomial_model(Int) -> Result[Model, FitError]
+
+pub fn prediction_csv(CurveResult) -> String
+
+pub fn project(Double, Parameter) -> Double
+
+pub fn projected_gradient(Array[Double], Array[Double], Array[Parameter], Array[Int]) -> Array[Double]
+
+pub fn qr_factor(Array[Array[Double]], Array[Double], tolerance? : Double) -> Result[QR, FitError]
+
+pub fn residual_diagnostics(Model, CurveResult) -> Result[Array[ResidualDiagnostic], FitError]
+
+pub fn result_json(CurveResult, pretty? : Bool) -> String
+
+pub fn robust_linearization(Loss, Array[Double], Array[Array[Double]]) -> (Array[Double], Array[Array[Double]])
+
+pub fn run_request(FitRequest) -> Result[CurveResult, FitError]
+
+pub fn saturation_model() -> Model
+
+pub fn sigmoid(Double) -> Double
+
+pub fn solve(Array[Parameter], (Array[Double]) -> Array[Double], jacobian? : (Array[Double]) -> Array[Array[Double]], weights? : Array[Double], options? : Options) -> Result[FitResult, FitError]
+
+pub fn solve_multistart(Array[Parameter], (Array[Double]) -> Array[Double], Array[Array[Double]], jacobian? : (Array[Double]) -> Array[Array[Double]], weights? : Array[Double], options? : Options) -> Result[MultiStartResult, FitError]
+
+pub fn statistics(Array[Double], Array[Double], Int) -> Result[Statistics, FitError]
+
+pub fn transpose(Array[Array[Double]]) -> Result[Array[Array[Double]], FitError]
+
+pub fn validate_observations(Array[Observation]) -> Result[Unit, FitError]
+
+pub fn validate_options(Options) -> Result[Unit, FitError]
+
+pub fn validate_parameters(Array[Parameter]) -> Result[Unit, FitError]
+
+pub fn validate_residuals(Array[Double], Int?) -> Result[Unit, FitError]
+
+pub fn zeros(Int, Int) -> Array[Array[Double]]
+
+// Errors
+
+// Types and methods
+pub(all) struct Attempt {
+  index : Int
+  start : Array[Double]
+  result : FitResult?
+  error : FitError?
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct CurveResult {
+  model : String
+  observations : Array[Observation]
+  predictions : Array[Double]
+  fit : FitResult
+  statistics : Statistics
+  loss : Loss
+} derive(ToJson, @debug.Debug)
+
+pub(all) enum FitError {
+  InvalidParameter(String)
+  InvalidOptions(String)
+  InvalidData(String)
+  InvalidResidual(String)
+  InvalidJacobian(String)
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct FitRequest {
+  model : String
+  data : Array[Observation]
+  parameters : Array[Parameter]
+  options : Options
+} derive(@debug.Debug)
+
+pub(all) struct FitResult {
+  names : Array[String]
+  values : Array[Double]
+  residuals : Array[Double]
+  cost : Double
+  termination : Termination
+  iterations : Int
+  evaluations : Int
+  jacobian_evaluations : Int
+  gradient_norm : Double
+  rank : Int
+  condition_proxy : Double?
+  covariance : Array[Array[Double]]?
+  standard_errors : Array[Double]?
+  warnings : Array[String]
+  trace : Array[Iteration]
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Iteration {
+  index : Int
+  cost : Double
+  trial_cost : Double?
+  damping : Double
+  gradient_norm : Double
+  step_norm : Double
+  accepted : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct JacobianCheck {
+  tested_entries : Int
+  maximum_absolute_error : Double
+  maximum_relative_error : Double
+  mismatches : Int
+} derive(ToJson, @debug.Debug)
+
+pub(all) enum Loss {
+  Linear
+  Huber(Double)
+  SoftL1(Double)
+  Cauchy(Double)
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct MeanBand {
+  x : Double
+  prediction : Double
+  standard_error : Double
+  lower : Double
+  upper : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Model {
+  name : String
+  parameter_names : Array[String]
+  prediction : (Double, Array[Double]) -> Double
+  gradient : ((Double, Array[Double]) -> Array[Double])?
+}
+pub fn Model::predict(Self, Array[Double], Array[Double]) -> Result[Array[Double], FitError]
+
+pub(all) struct MultiStartResult {
+  selected : Int
+  best : FitResult
+  attempts : Array[Attempt]
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Observation {
+  x : Double
+  y : Double
+  weight : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Options {
+  max_iterations : Int
+  max_evaluations : Int
+  gradient_tolerance : Double
+  step_tolerance : Double
+  cost_tolerance : Double
+  difference_step : Double
+  initial_damping : Double
+  rank_tolerance : Double
+  loss : Loss
+  trace : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Parameter {
+  name : String
+  initial : Double
+  lower : Double?
+  upper : Double?
+  fixed : Bool
+  scale : Double
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct QR {
+  r : Array[Array[Double]]
+  qt_rhs : Array[Double]
+  permutation : Array[Int]
+  rank : Int
+  condition_proxy : Double?
+} derive(@debug.Debug)
+pub fn QR::inverse_gram(Self) -> Array[Array[Double]]?
+pub fn QR::solve(Self) -> Result[Array[Double], FitError]
+
+pub(all) struct ResidualDiagnostic {
+  index : Int
+  residual : Double
+  weighted_residual : Double
+  leverage : Double?
+  internally_studentized : Double?
+  cooks_distance : Double?
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct Statistics {
+  count : Int
+  free_parameters : Int
+  degrees_of_freedom : Int
+  sse : Double
+  rmse : Double
+  residual_mean : Double
+  maximum_error : Double
+  r_squared : Double?
+  adjusted_r_squared : Double?
+  aic : Double?
+  aicc : Double?
+  bic : Double?
+} derive(ToJson, @debug.Debug)
+
+pub(all) enum Termination {
+  Gradient
+  Step
+  Cost
+  AllFixed
+  MaxIterations
+  MaxEvaluations
+  Stalled
+  NumericalFailure
+} derive(Eq, ToJson, @debug.Debug)
+pub fn Termination::converged(Self) -> Bool
+
+// Type aliases
+pub type GradientFn = (Double, Array[Double]) -> Array[Double]
+
+pub type JacobianFn = (Array[Double]) -> Array[Array[Double]]
+
+pub type PredictionFn = (Double, Array[Double]) -> Double
+
+pub type ResidualFn = (Array[Double]) -> Array[Double]
+
+// Traits

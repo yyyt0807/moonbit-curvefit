@@ -116,6 +116,9 @@ pub fn mean_bands(
     Ok(v) => v
     Err(e) => return Err(e)
   }
+  if x.is_empty() {
+    return Ok([])
+  }
   let numeric = if model.gradient is None {
     let parameters = Array::makei(fit.values.length(), fn(i) {
       parameter(model.parameter_names[i], fit.values[i])
