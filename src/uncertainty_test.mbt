@@ -18,6 +18,24 @@ test "model checker detects incorrect custom analytic gradient" {
 }
 
 ///|
+test "empty mean-band input is consistent for numerical custom gradients" {
+  let model = custom_model("custom-line", ["intercept", "slope"], fn(x, p) {
+    p[0] + p[1] * x
+  }).unwrap()
+  let result = fit_curve(
+    model,
+    [
+      observation(0.0, 1.1),
+      observation(1.0, 2.9),
+      observation(2.0, 5.1),
+      observation(3.0, 6.9),
+    ],
+    [parameter("intercept", 0.0), parameter("slope", 0.0)],
+  ).unwrap()
+  assert_eq(mean_bands(model, result.fit, []).unwrap().length(), 0)
+}
+
+///|
 test "mean curve bands agree with analytical line variance" {
   let model = linear_model()
   let data = [

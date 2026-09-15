@@ -19,3 +19,12 @@ test "heuristic initialization is order independent for unique x" {
     assert_true(initial_parameters(named_model(name).unwrap(), data) is Ok(_))
   }
 }
+
+///|
+test "seed estimation rejects a custom model impersonating a built-in arity" {
+  let model = custom_model("linear", ["only"], fn(x, p) { x * p[0] }).unwrap()
+  assert_true(
+    initial_parameters(model, [observation(0.0, 1.0), observation(1.0, 2.0)])
+    is Err(_),
+  )
+}
