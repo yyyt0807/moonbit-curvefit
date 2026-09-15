@@ -20,7 +20,12 @@ pub fn loss_value(loss : Loss, residual : Double) -> (Double, Double) {
     Cauchy(scale) => {
       let u = residual / scale
       let root = norm2([1.0, u])
-      (scale * scale * root.ln(), 1.0 / root * (1.0 / root))
+      let logterm = if u.abs() < 1.0e150 {
+        0.5 * @math.ln_1p(u * u)
+      } else {
+        @math.ln(root)
+      }
+      (scale * scale * logterm, 1.0 / root * (1.0 / root))
     }
   }
 }

@@ -1,6 +1,7 @@
 ///|
 test "loss is symmetric and robust influence shrinks" {
-  for loss in [Linear, Huber(1.0), SoftL1(1.0), Cauchy(1.0)] {
+  let losses : Array[Loss] = [Linear, Huber(1.0), SoftL1(1.0), Cauchy(1.0)]
+  for loss in losses {
     let (a, w) = loss_value(loss, 10.0)
     let (b, _) = loss_value(loss, -10.0)
     assert_eq(a, b)
