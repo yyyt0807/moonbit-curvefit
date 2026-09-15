@@ -233,7 +233,7 @@ pub fn solve(
     warnings.push("solver stopped without convergence")
   }
   warnings.push("local convergence does not establish global optimality")
-  Ok({
+  let result : FitResult = {
     names: parameters.map(fn(p) { p.name }),
     values,
     residuals: r,
@@ -249,5 +249,46 @@ pub fn solve(
     standard_errors: None,
     warnings,
     trace,
-  })
+  }
+  if active.is_empty() {
+    return Ok(result)
+  }
+  let needed = if jacobian is Some(_) { 0 } else { 2 * active.length() }
+  if ev.count + needed > options.max_evaluations {
+    warnings.push("evaluation budget prevents final Jacobian diagnostics")
+    return Ok(result)
+  }
+  let final_j = match jacobian {
+    Some(callback) =>
+      analytic_jacobian(callback, values, parameters, active, precision)
+    None =>
+      difference_jacobian(
+        ev,
+        values,
+        parameters,
+        active,
+        r,
+        options.difference_step,
+      )
+  }
+  match final_j {
+    Ok(j) =>
+      Ok(
+        diagnose(
+          {
+            ..result,
+            evaluations: ev.count,
+            jacobian_evaluations: jac_count + 1,
+          },
+          parameters,
+          j,
+          options.loss,
+          rank_tolerance=options.rank_tolerance,
+        ),
+      )
+    Err(_) => {
+      warnings.push("final Jacobian evaluation failed; covariance unavailable")
+      Ok({ ..result, evaluations: ev.count, })
+    }
+  }
 }
