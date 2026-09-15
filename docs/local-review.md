@@ -50,7 +50,7 @@ if not converged or robust_loss or rank_deficient or active_bound:
 - `moon test --target all --deny-warn`：86 项，在 wasm、wasm-gc、JS、native 各全部通过（不是 344 个不同用例）。
 - `moon run examples/demo --target native/js/wasm-gc`：三个完整合成场景全部运行且断言通过，各后端参数/停止状态一致。
 - `moon run examples/benchmark --target native`：12 组准确性检查通过，最多 10,000 点。
-- 原生 CLI 实际导出 JSON 可解码，CSV→SVG 可作 XML 解析；缺失输入退出 2；未收敛结果退出 3 在 IO 回归测试中保留显式状态。
+- 原生 CLI 实际导出 JSON 可解码，CSV→SVG 可作 XML 解析；缺失输入实际退出 2；nonconverged.json 耗尽预算实际退出 3，JSON converged=false。
 - `python tools/differential.py`：SciPy 1.17.1、NumPy 2.4.6，13 个独立合成对照通过；包括加权、约束、固定参数、指数、Gaussian、4/5 参数 logistic、saturation/Hill 和三种鲁棒损失。最大归一化参数误差约 8.46e-7，最大归一化目标误差约 6.23e-14；适用 OLS 协方差也对照。
 - `moon fmt` / `moon info` 后 `git diff --exit-code`：通过；生成接口已提交。
 - Apache-2.0 根许可证、来源说明及忽略规则存在；无患者数据，Python 虚拟环境/构建产物不入 Git。

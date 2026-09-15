@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "model": "linear",
+  "data": [{"x": 0, "y": 1}, {"x": 1, "y": 3}, {"x": 2, "y": 5}],
+  "parameters": [{"name": "intercept", "initial": 0}, {"name": "slope", "initial": 0}],
+  "options": {"max_evaluations": 1}
+}
