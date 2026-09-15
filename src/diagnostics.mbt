@@ -34,6 +34,10 @@ pub fn diagnose(
     projected_gradient(gradient, result.values, parameters, active),
   )
   let mut covariance : Array[Array[Double]]? = None
+  if !finite(final_gradient) {
+    warnings.push("final gradient arithmetic overflow; diagnostics unavailable")
+    return { ..result, warnings, }
+  }
   let mut errors : Array[Double]? = None
   let mut at_bound = false
   for i in active {

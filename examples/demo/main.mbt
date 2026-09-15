@@ -49,9 +49,15 @@ fn main raise {
     @fit.linear_model(),
     contaminated,
     [@fit.parameter("intercept", 0.0), @fit.parameter("slope", 0.0)],
-    options={ ..@fit.default_options(), loss: @fit.Huber(0.1), trace: true, },
+    options={
+      ..@fit.default_options(),
+      loss: @fit.Huber(0.1),
+      trace: true,
+      gradient_tolerance: 1.0e-6,
+    },
   ).unwrap()
   show("3. offline robust analysis", robust)
+  assert_true(robust.fit.termination.converged())
   println(
     "ordinary vs robust intercept: \{ordinary.fit.values[0]} vs \{robust.fit.values[0]}",
   )

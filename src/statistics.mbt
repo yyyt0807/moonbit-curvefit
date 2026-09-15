@@ -49,6 +49,9 @@ pub fn statistics(
   }
   let r2 = if total > 0.0 { Some(1.0 - sse / total) } else { None }
   let df = n - free_parameters
+  if !finite(sse) || !finite(total) || !finite(mean) {
+    return Err(InvalidData("statistics arithmetic overflow"))
+  }
   let adjusted = if df > 0 && n > 1 {
     r2.map(fn(r) { 1.0 - (1.0 - r) * (n - 1).to_double() / df.to_double() })
   } else {
@@ -57,7 +60,7 @@ pub fn statistics(
   // +1 accounts for the estimated Gaussian variance parameter.
   let k = (free_parameters + 1).to_double()
   let log_likelihood_part = if sse > 0.0 {
-    Some(n.to_double() * @math.ln(sse / n.to_double()))
+    Some(n.to_double() * (@math.ln(sse) - @math.ln(n.to_double())))
   } else {
     None
   }

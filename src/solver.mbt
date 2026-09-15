@@ -106,8 +106,7 @@ pub fn solve(
       let pg = projected_gradient(gradient, values, parameters, active)
       gradient_norm = norm_inf(pg)
       if !finite(gradient_norm) {
-        termination = NumericalFailure
-        break
+        return Err(InvalidJacobian("gradient arithmetic overflow"))
       }
       if gradient_norm <= options.gradient_tolerance {
         termination = Gradient

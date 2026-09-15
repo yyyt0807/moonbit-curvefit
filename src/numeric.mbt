@@ -4,6 +4,9 @@ pub fn norm2(values : Array[Double]) -> Double {
   let mut scale = 0.0
   let mut sum = 1.0
   for x in values {
+    if !finite(x) {
+      return x.abs()
+    }
     let a = x.abs()
     if a != 0.0 {
       if scale < a {
@@ -27,6 +30,9 @@ pub fn norm2(values : Array[Double]) -> Double {
 pub fn norm_inf(values : Array[Double]) -> Double {
   let mut largest = 0.0
   for x in values {
+    if !finite(x) {
+      return x.abs()
+    }
     if x.abs() > largest {
       largest = x.abs()
     }
