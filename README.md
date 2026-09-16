@@ -4,7 +4,7 @@ Pure MoonBit small-dense nonlinear least squares, with parameter bounds, robust 
 
 Useful for instrument calibration, degradation/kinetics curves, peak fitting, saturation responses and offline analysis embedded in a JavaScript/WASM application. No pharmacology experiment or medical decision-making is required. The core numerical code has no FFI; only the native CLI uses filesystem support and the C `exit` function.
 
-Status: local implementation complete; GitHub creation/push, remote CI verification and mooncakes publication are intentionally deferred. The URL in `moon.mod` is the intended destination, not evidence of a published release.
+Status: `yyyt0807/curvefit@0.1.0` is published on mooncakes. The [public GitHub repository](https://github.com/yyyt0807/moonbit-curvefit) has passing Ubuntu/Windows/macOS CI, and a fresh consumer downloaded the published package and ran a fitting example. See [release verification](docs/release-verification.md). The archive README describes the earlier pre-publication state; this checkout records the completed release.
 
 ## Run from this checkout
 
@@ -80,7 +80,7 @@ python -m pip install numpy==2.4.6 scipy==1.17.1
 python tools/differential.py
 ```
 
-Python tools are development-only. Thirteen synthetic SciPy cases compare convergence, cost, parameters and eligible covariance. This is evidence for tested cases, not universal numerical certification. [Local review](docs/local-review.md) records actual results. CI covers three operating systems/all backends; its remote result remains unverified until push.
+Python tools are development-only. Thirteen synthetic SciPy cases compare convergence, cost, parameters and eligible covariance. This is evidence for tested cases, not universal numerical certification. [Local review](docs/local-review.md) records actual results. [Remote CI](https://github.com/yyyt0807/moonbit-curvefit/actions) covers three operating systems/all backends and has passed.
 
 Existing scientific/linear fitting packages share underlying mathematics. MoonCurveFit contributes an integrated bounded nonlinear residual solver, robust objectives, careful uncertainty eligibility and portable IO/report workflow. We do not claim absence of all similar algorithms. See [comparison](docs/landscape.md) and [third-party notes](docs/third-party.md).
 
@@ -88,4 +88,4 @@ Existing scientific/linear fitting packages share underlying mathematics. MoonCu
 
 The applicant's September schedule supersedes older guide dates: application/development and acceptance deadline September 24, 24:00. History preserves meaningful development commits. [Proposal writing guide](docs/proposal-outline.md) supplies facts, **not a human-authored final application**; the applicant must write/review the final one-page proposal with at least three scenarios and confirm account/applicant identity. No remote publish automation is configured.
 
-Before final submission: create public `yyyt0807/moonbit-curvefit`, push this history, verify CI on its actual default branch, publish `yyyt0807/curvefit` to mooncakes and re-run acceptance review. Local readiness is not final competition acceptance.
+Public push, CI verification and mooncakes publication are complete. Before final submission, personally rewrite/confirm [the proposal draft](MoonCurveFit项目申报书.md), verify applicant identity and the one-project rule, and follow the official submission process. Passing engineering checks is not organizer acceptance.
