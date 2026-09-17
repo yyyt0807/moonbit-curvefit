@@ -2,6 +2,8 @@
 
 ## Objective and solver
 
+General residual terms and curve observations enter the same numerical core. Named term precision is applied as `sqrt(precision) * raw_residual`; its reported objective contribution is then evaluated under the selected loss. Names affect auditability, never arithmetic. All term gradients are physical derivatives before parameter scaling and must follow full parameter order.
+
 Unweighted residual e_i = f(x_i,p) − y_i; solver residual r_i = sqrt(w_i)e_i, with precision w_i > 0. Linear objective is sum r_i²/2. Robust objectives are separable in this **weighted** residual space. A robust threshold therefore uses weighted residual units.
 
 For u = r/s: Huber = r²/2 inside |r|≤s, otherwise s|r|−s²/2; SoftL1 = s²(sqrt(1+u²)−1); Cauchy = s² ln(1+u²)/2. Their IRLS weights are 1 or s/|r|, 1/sqrt(1+u²), and 1/(1+u²), respectively.

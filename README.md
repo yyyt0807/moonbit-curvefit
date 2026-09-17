@@ -1,10 +1,10 @@
 # MoonCurveFit
 
-Pure MoonBit small-dense nonlinear least squares, with parameter bounds, robust losses and honest convergence diagnostics. Module: `yyyt0807/curvefit`; library package: `yyyt0807/curvefit/src`. Apache-2.0. Original AI-assisted implementation, not a SciPy port or wrapper.
+Pure MoonBit small-dense residual optimization and nonlinear least squares, with parameter bounds, robust losses and honest convergence diagnostics. Module: `yyyt0807/curvefit`; library package: `yyyt0807/curvefit/src`. Apache-2.0. Original AI-assisted implementation, not a SciPy port or wrapper.
 
-Useful for instrument calibration, degradation/kinetics curves, peak fitting, saturation responses and offline analysis embedded in a JavaScript/WASM application. No pharmacology experiment or medical decision-making is required. The core numerical code has no FFI; only the native CLI uses filesystem support and the C `exit` function.
+The reusable center is broader than curve fitting: domain libraries describe named scalar mismatches from a forward model, then reuse bounds, scaling, robust estimation, derivative fallback, convergence and rank diagnostics. This supports localization, simulator parameter identification, telemetry capacity planning, calibration and browser-side analysis without Python or numerical FFI. Only the native CLI uses filesystem support and the C `exit` function.
 
-Status: `yyyt0807/curvefit@0.1.0` is published on mooncakes. The [public GitHub repository](https://github.com/yyyt0807/moonbit-curvefit) has passing Ubuntu/Windows/macOS CI, and a fresh consumer downloaded the published package and ran a fitting example. See [release verification](docs/release-verification.md). The archive README describes the earlier pre-publication state; this checkout records the completed release.
+Status: `yyyt0807/curvefit@0.1.0` is published on mooncakes; this checkout is the 0.2.0 residual-optimization expansion pending its release verification. The [public GitHub repository](https://github.com/yyyt0807/moonbit-curvefit) has passing Ubuntu/Windows/macOS CI for 0.1. See [release verification](docs/release-verification.md) and [rejection response](docs/rejection-response.md).
 
 ## Run from this checkout
 
@@ -18,10 +18,27 @@ moon test --target all --deny-warn
 moon run examples/demo --target native
 moon run examples/demo --target js
 moon run examples/demo --target wasm-gc
+moon run examples/ecosystem --target native
 moon run examples/benchmark --target native
 ```
 
-The demo asserts three scenarios: instrument calibration, bounded exponential decay and outlier-resistant offline regression. All observations are synthetic. The benchmark checks accuracy for 100, 1,000 and 10,000 points; it reports evaluation counts, not timing claims. Measure wall time externally, excluding compilation for steady-state comparisons.
+The ecosystem example asserts three cross-domain residual problems: 2D localization, forward-model RC identification and service capacity planning. The curve demo retains calibration, exponential decay and outlier-resistant regression. All observations are synthetic. The benchmark checks accuracy for 100, 1,000 and 10,000 points; it reports evaluation counts, not timing claims.
+
+## General residual problems
+
+`ResidualTerm` is the ecosystem integration seam. Each term has a stable name, precision weight, scalar mismatch callback and optional full physical gradient. `solve_terms` uses an analytic Jacobian only when every term supplies one; otherwise it computes the complete Jacobian numerically. The result maps raw and weighted residuals plus robust objective contribution back to every term name.
+
+```moonbit
+let result = @fit.solve_terms(
+  [@fit.parameter("x", 0.0), @fit.parameter("y", 0.0)],
+  [
+    @fit.residual_term("sum", fn(p) { p[0] + p[1] - 5.0 }),
+    @fit.residual_term("difference", fn(p) { p[0] - p[1] - 1.0 }),
+  ],
+).unwrap()
+```
+
+This core-array API can wrap outputs from simulators and domain packages without forcing an ndarray dependency. See [the ecosystem extension contract](docs/ecosystem-value.md) and the executable [integration example](examples/ecosystem/main.mbt).
 
 ## Library use
 
@@ -71,7 +88,7 @@ No sparse matrices, autodiff, complex arithmetic, GPU, ODE solving, global optim
 
 ## Validation and ecosystem positioning
 
-Tests cover model/gradient parity, fixed/bounded/scaled parameters, robust losses, rank deficiency, budgets, overflow, malformed IO and report escaping. Independent black-box comparison:
+Tests cover named residual composition, model/gradient parity, fixed/bounded/scaled parameters, robust losses, rank deficiency, budgets, overflow, malformed IO and report escaping. Independent black-box comparison:
 
 ```sh
 python -m venv .venv
@@ -82,7 +99,7 @@ python tools/differential.py
 
 Python tools are development-only. Thirteen synthetic SciPy cases compare convergence, cost, parameters and eligible covariance. This is evidence for tested cases, not universal numerical certification. [Local review](docs/local-review.md) records actual results. [Remote CI](https://github.com/yyyt0807/moonbit-curvefit/actions) covers three operating systems/all backends and has passed.
 
-Existing scientific/linear fitting packages share underlying mathematics. MoonCurveFit contributes an integrated bounded nonlinear residual solver, robust objectives, careful uncertainty eligibility and portable IO/report workflow. We do not claim absence of all similar algorithms. See [comparison](docs/landscape.md) and [third-party notes](docs/third-party.md).
+Existing scientific/linear fitting packages share underlying mathematics. MoonCurveFit contributes an integration seam from domain forward models to named bounded nonlinear residual optimization, robust objectives, careful uncertainty eligibility and portable IO/report workflow. It complements broad ndarray/generic optimization and linear-regression packages rather than replacing them. See [ecosystem value](docs/ecosystem-value.md), [comparison](docs/landscape.md) and [third-party notes](docs/third-party.md).
 
 ## Contest delivery
 

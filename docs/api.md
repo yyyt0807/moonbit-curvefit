@@ -5,6 +5,7 @@ The generated `src/pkg.generated.mbti` is the authoritative public signature lis
 ## Recommended entry points
 
 - `fit_curve`: prediction models + observations; name/order must match exactly.
+- `residual_term` + `solve_terms`: compose general inverse/equation problems from named weighted scalar discrepancies; returns auditable per-term evidence.
 - `solve`: arbitrary unweighted residual vector + optional full physical Jacobian.
 - `solve_multistart`: 1–64 explicit starts; budgets apply **per start**, not globally.
 - `initial_parameters`: built-in heuristic seeds; explicit starts are preferable for difficult data.
@@ -14,6 +15,8 @@ The generated `src/pkg.generated.mbti` is the authoritative public signature lis
 - `result_json`, `markdown_report`, `prediction_csv`, `curve_svg`: output from valid fit results.
 
 All high-level numerical failures use `Result[..., FitError]`. A valid fit can return `Ok` with **nonconverged** termination. Do not equate `Ok` with success.
+
+For `solve_terms`, precision is applied before the configured robust loss. Term names must be unique/nonempty. A gradient must contain all parameters including fixed ones. Analytic mode is all-or-nothing: one missing gradient selects a complete numerical Jacobian. This policy prevents a mixed Jacobian from hiding one low-quality derivative. The returned term objective contributions sum to `fit.cost` for deterministic callbacks.
 
 ## JSON version 1
 
