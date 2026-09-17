@@ -1,0 +1,7 @@
+import {
+  "yyyt0807/curvefit/src" @fit,
+  "moonbitlang/core/math",
+  "moonbitlang/core/debug",
+}
+
+pkgtype(kind: "executable")

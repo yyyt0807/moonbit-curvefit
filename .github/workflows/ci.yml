@@ -39,6 +39,9 @@ jobs:
       - run: moon run examples/demo --target native
       - run: moon run examples/demo --target js
       - run: moon run examples/demo --target wasm-gc
+      - run: moon run examples/ecosystem --target native
+      - run: moon run examples/ecosystem --target js
+      - run: moon run examples/ecosystem --target wasm-gc
       - run: moon run examples/benchmark --target native
       - run: moon run cmd/curvefit --target native -- fit-json examples/data/calibration.json markdown
       - uses: actions/setup-python@v5

@@ -1,6 +1,6 @@
 name = "yyyt0807/curvefit"
 
-version = "0.1.0"
+version = "0.2.0"
 
 readme = "README.md"
 
@@ -10,7 +10,7 @@ license = "Apache-2.0"
 
 keywords = [ "curve-fitting", "least-squares", "numerics", "wasm" ]
 
-description = "Pure MoonBit dense nonlinear least-squares with robust losses and convergence diagnostics"
+description = "Pure MoonBit bounded residual optimization and nonlinear fitting with auditable diagnostics"
 
 preferred_target = "wasm-gc"
 

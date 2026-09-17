@@ -100,6 +100,8 @@ pub fn qr_factor(Array[Array[Double]], Array[Double], tolerance? : Double) -> Re
 
 pub fn residual_diagnostics(Model, CurveResult) -> Result[Array[ResidualDiagnostic], FitError]
 
+pub fn residual_term(String, (Array[Double]) -> Double, precision? : Double, gradient? : (Array[Double]) -> Array[Double]) -> ResidualTerm
+
 pub fn result_json(CurveResult, pretty? : Bool) -> String
 
 pub fn robust_linearization(Loss, Array[Double], Array[Array[Double]]) -> (Array[Double], Array[Array[Double]])
@@ -113,6 +115,8 @@ pub fn sigmoid(Double) -> Double
 pub fn solve(Array[Parameter], (Array[Double]) -> Array[Double], jacobian? : (Array[Double]) -> Array[Array[Double]], weights? : Array[Double], options? : Options) -> Result[FitResult, FitError]
 
 pub fn solve_multistart(Array[Parameter], (Array[Double]) -> Array[Double], Array[Array[Double]], jacobian? : (Array[Double]) -> Array[Array[Double]], weights? : Array[Double], options? : Options) -> Result[MultiStartResult, FitError]
+
+pub fn solve_terms(Array[Parameter], Array[ResidualTerm], options? : Options) -> Result[ResidualProblemResult, FitError]
 
 pub fn statistics(Array[Double], Array[Double], Int) -> Result[Statistics, FitError]
 
@@ -273,6 +277,19 @@ pub(all) struct ResidualDiagnostic {
   cooks_distance : Double?
 } derive(ToJson, @debug.Debug)
 
+pub(all) struct ResidualProblemResult {
+  fit : FitResult
+  terms : Array[TermDiagnostic]
+  used_analytic_jacobian : Bool
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct ResidualTerm {
+  name : String
+  precision : Double
+  evaluate : (Array[Double]) -> Double
+  gradient : ((Array[Double]) -> Array[Double])?
+}
+
 pub(all) struct Statistics {
   count : Int
   free_parameters : Int
@@ -286,6 +303,14 @@ pub(all) struct Statistics {
   aic : Double?
   aicc : Double?
   bic : Double?
+} derive(ToJson, @debug.Debug)
+
+pub(all) struct TermDiagnostic {
+  name : String
+  precision : Double
+  residual : Double
+  weighted_residual : Double
+  objective_contribution : Double
 } derive(ToJson, @debug.Debug)
 
 pub(all) enum Termination {
@@ -308,5 +333,9 @@ pub type JacobianFn = (Array[Double]) -> Array[Array[Double]]
 pub type PredictionFn = (Double, Array[Double]) -> Double
 
 pub type ResidualFn = (Array[Double]) -> Array[Double]
+
+pub type ScalarGradient = (Array[Double]) -> Array[Double]
+
+pub type ScalarResidual = (Array[Double]) -> Double
 
 // Traits
