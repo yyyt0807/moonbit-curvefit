@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — residual optimization expansion, 2026-09-17
+## 0.2.0 — published residual optimization expansion, 2026-09-17
 
 - Added named, weighted scalar residual terms as a stable integration seam for domain packages.
 - Added all-analytic or complete-numerical Jacobian policy and per-term objective evidence.

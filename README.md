@@ -4,7 +4,7 @@ Pure MoonBit small-dense residual optimization and nonlinear least squares, with
 
 The reusable center is broader than curve fitting: domain libraries describe named scalar mismatches from a forward model, then reuse bounds, scaling, robust estimation, derivative fallback, convergence and rank diagnostics. This supports localization, simulator parameter identification, telemetry capacity planning, calibration and browser-side analysis without Python or numerical FFI. Only the native CLI uses filesystem support and the C `exit` function.
 
-Status: `yyyt0807/curvefit@0.1.0` is published on mooncakes; this checkout is the 0.2.0 residual-optimization expansion pending its release verification. The [public GitHub repository](https://github.com/yyyt0807/moonbit-curvefit) has passing Ubuntu/Windows/macOS CI for 0.1. See [release verification](docs/release-verification.md) and [rejection response](docs/rejection-response.md).
+Status: `yyyt0807/curvefit@0.2.0` is published on mooncakes. The exact numerical commit passed Ubuntu/Windows/macOS CI, and a clean consumer downloaded the package and exercised the new residual API on wasm-gc, JS and Native. See [release verification](docs/release-verification.md) and [rejection response](docs/rejection-response.md).
 
 ## Run from this checkout
 

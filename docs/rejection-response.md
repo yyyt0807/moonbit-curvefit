@@ -35,9 +35,9 @@ Current MoonBit also has forward-domain packages such as `hsy-bit/moonbit-circui
 
 These are not merely renamed x/y datasets: the first is geometry with multiple equations, the second wraps a simulator formula with analytic gradients, and the third enforces a domain capacity bound with numerical derivatives. Together they demonstrate the common reusable need: estimate a few constrained parameters from redundant/noisy evidence on Native, JS or wasm-gc.
 
-## Verification plan
+## Verification result
 
-Local evidence before push: 90 tests pass on wasm/wasm-gc/JS/Native, and all three new scenarios recover their synthetic truth on Native/JS/wasm-gc. After push, the exact 0.2 commit must pass Ubuntu/Windows/macOS CI and the version must be installed from mooncakes in a clean consumer before this response is marked complete.
+90 tests pass on wasm/wasm-gc/JS/Native, and all three new scenarios recover their synthetic truth on Native/JS/wasm-gc. Commit `55f5f0d` passed Ubuntu/Windows/macOS CI in run 35190424607, including the independent SciPy checks on Ubuntu. Version 0.2.0 was published with server 200 OK, appeared in registry search, then was downloaded into a clean consumer; the new `solve_terms` API recovered a two-equation solution on wasm-gc, JS and Native.
 
 ## Remaining limits
 

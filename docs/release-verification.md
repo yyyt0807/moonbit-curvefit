@@ -29,3 +29,12 @@
 `MoonCurveFit项目申报书.md` 参考 MoonMIME 的简洁结构，不复制其姓名/联系方式；包含定位、已有生态交集说明、三个可复现完整场景、量化证据、交付与边界。Markdown 23 行，按一页材料编排；实际显示页面长度由提交端渲染决定。
 
 九月规则明确申报书人工撰写，因此文件显式标注辅助草稿，须本人改写确认，不能以 AI 草稿冒充已满足人工要求。主要贡献者/申请人身份需本人核实；Git 作者名与登录账号一致不等于身份认证。源码 4,065 有效 MoonBit 行包含测试/示例（库单独 2,706）；对规模口径/生态差异如有疑问须向主办方确认。
+
+## 0.2 驳回后重构验证（2026-09-17）
+
+- 数值/API提交 `7b16455` 增加命名残差优化，`55f5f0d` 为 latest-compiler 告警兼容；文档提交不改变数值实现。
+- GitHub Actions 35190424607 在 Ubuntu、Windows、macOS 全部 success；执行 90 项四后端测试、三个新场景的 Native/JS/wasm-gc 运行，Ubuntu 继续执行 13 个 SciPy 对照。
+- `yyyt0807/curvefit@0.2.0` 发布时原项目与解包项目 check 通过，服务器 200 OK；registry 搜索返回 0.2.0 及新的 residual-optimization 描述。
+- 全新 consumer 明确依赖 0.2.0，输出 Downloading，随后以新 `residual_term/solve_terms` API 解二元方程；wasm-gc、JS、Native 均运行成功。
+- 0.2.0 ZIP SHA-256：EA8B5E90DD530DF9011640045C11562A1D3A3A7798F8484DDC235490C13BDE29。
+- 有效 MoonBit 4,367 行（含测试/示例），申报书 22 行；规模不替代生态价值，实际扩展关系及保留限制见 `ecosystem-value.md` 和 `rejection-response.md`。
